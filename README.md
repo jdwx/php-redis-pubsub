@@ -19,7 +19,11 @@ This package requires PHP 8.0 or later.
 
 ## Installation
 
-TBD.
+Via composer:
+    
+```bash
+composer require jdwx/redis-pubsub
+```
 
 ## Usage
 
@@ -27,7 +31,8 @@ TBD.
 ```php
 use JDWX\RedisPubSub\RedisPubSub;
 
-$rps = new RedisPubSub( 'localhost' );
+# By default, a connection is made to localhost:6379 without TLS.
+$rps = new RedisPubSub();
 $rps->publish( 'test', 'Hello, world!' );
 ```
 
@@ -35,7 +40,14 @@ $rps->publish( 'test', 'Hello, world!' );
 ```php
 use JDWX\RedisPubSub\RedisPubSub;
 
-$rps = new RedisPubSub( 'localhost' );
+# TLS is enabled by providing the paths to the client certificate and key, and,
+# optionally, the CA certificate if the server should be verified.
+$rps = new RedisPubSub( 'localhost', 6379, './client.crt', './client.key', './ca.crt' );
+
+# Perform authentication.
+$rps->auth( 'password' );
+
+# Subscribe to a channel.
 $rps->subscribe( 'test' );
 
 # This will block until a message is received.
