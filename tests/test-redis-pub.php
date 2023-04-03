@@ -1,23 +1,10 @@
 <?php
 
 
+require __DIR__ . '/common.php';
 
-require '../vendor/autoload.php';
 
-
-if ( in_array( "tls", $argv ) ) {
-    $rps = new JDWX\RedisPubSub\RedisPubSub(
-        'localhost', 6379,
-        './client.crt',
-        './client.key',
-        './ca.crt'
-    );
-} else {
-    $rps = new JDWX\RedisPubSub\RedisPubSub( 'localhost', 6379 );
-}
-if ( in_array( "auth", $argv ) ) {
-    $rps->auth( 'open-sesame' );
-}
+$rps = GetRedis( in_array( "auth", $argv ), in_array( "tls", $argv ) );
 
 
 $rChannels = [ 'test', 'test2', 'test.foo' ];
