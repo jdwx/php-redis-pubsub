@@ -5,13 +5,20 @@
 require '../vendor/autoload.php';
 
 
-$rps = new JDWX\DAOS\RedisPubSub(
-    'localhost', 6379,
-    './client.crt',
-    './client.key',
-    '../ca/ca.crt'
-);
-$rps->auth( 'open-sesame' );
+if ( in_array( "tls", $argv ) ) {
+    $rps = new JDWX\RedisPubSub\RedisPubSub(
+        'localhost', 6379,
+        './client.crt',
+        './client.key',
+        './ca.crt'
+    );
+} else {
+    $rps = new JDWX\RedisPubSub\RedisPubSub( 'localhost', 6379 );
+}
+if ( in_array( "auth", $argv ) ) {
+    $rps->auth( 'open-sesame' );
+}
+
 
 $rChannels = [ 'test', 'test2', 'test.foo' ];
 for ( $i = 0; $i < 10; ++$i ) {
@@ -19,4 +26,3 @@ for ( $i = 0; $i < 10; ++$i ) {
     $rps->publish( $stChannel, 'Hello, world ' . $i . ' to ' . $stChannel . ' from ' . posix_getpid() . '!' );
     sleep( 1 );
 }
-

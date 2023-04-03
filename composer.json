@@ -1,0 +1,11 @@
+{
+  "name": "jdwx/redis-pubsub",
+  "autoload": {
+    "psr-4": {
+      "JDWX\\RedisPubSub\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.0"
+  }
+}
